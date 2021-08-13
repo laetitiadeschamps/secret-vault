@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\File;
 use App\Form\FileType;
+use App\Form\FileUploadType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +21,7 @@ class FileController extends AbstractController
     public function upload(HttpFoundationRequest $request, EntityManagerInterface $em): Response
     {
         $file = new File();
-        $form = $this->createForm(FileType::class, $file);
+        $form = $this->createForm(FileUploadType::class, $file);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
