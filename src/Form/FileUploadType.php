@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\File as ConstraintsFile;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class FileUploadType extends AbstractType
 {
@@ -18,11 +19,11 @@ class FileUploadType extends AbstractType
             ->add('path',FileType::class, [
                 'label' => false,
                 'mapped' => false,
-
-                // make it optional so you don't have to re-upload the PDF file
-                'required' => false,
                 // unmapped fields can't define their validation using annotations
                 'constraints' => [
+                    new NotBlank([
+                        "message"=>"Merci de saisir un fichier à charger"
+                    ]),
                     new ConstraintsFile([
                         'maxSize' => '3000k',
                         'mimeTypes' => [
@@ -38,6 +39,7 @@ class FileUploadType extends AbstractType
                 'attr'=> [
                     'placeholder'=>'Donnez un nom à votre fichier'
                 ]
+                
             ])
             ->add('submit', SubmitType::class, [
                 'label'=>'Lancer le chargement',

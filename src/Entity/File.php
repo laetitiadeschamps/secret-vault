@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\FileRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FileRepository::class)
@@ -45,6 +46,7 @@ class File
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le nom du fichier doit être renseigné.")
      */
     private $alias;
 
