@@ -16,11 +16,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
+/**
+* @Route("/file", name="file-", requirements={"id":"\d+"})
+*/
 class FileController extends AbstractController
 {
     /**
      * Route allowing to upload a file through a form and processing it
-     * @Route("/file", name="file-upload", methods={"GET", "POST"})
+     * @Route("/", name="upload", methods={"GET", "POST"})
      */
     public function upload(HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Security $security): Response
     {
@@ -52,6 +55,25 @@ class FileController extends AbstractController
         return $this->render('file/form.html.twig', [
             'form'=> $form->createView()
         ]);
+    }
+    /**
+     * Route allowing to decrypt and download a file
+     * @Route("/{id}", name="download", methods={"GET", "POST"})
+     */
+    public function download(HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Security $security): Response
+    {
+        
+        /** @var User $user */
+        $user = $security->getUser();
+       // deny access unlesss granted 
+
+       // TODO decrypt file
+
+       // TODO download
+       
+        return $this->redirectToRoute('main');
+        
+       
     }
         
 }

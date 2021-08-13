@@ -7,7 +7,7 @@
     <h1>Mes fichiers</h1>
     <ul>
         {% for file in files %}
-            <a href="{{path('file_download', {id: file.id})}}">{{ file.alias }}
+            <a href="{{path('file-download', {id: file.id})}}">{{ file.alias }}
                 <span><i class="fas fa-download px-2"></i></span>
             </a>
 
