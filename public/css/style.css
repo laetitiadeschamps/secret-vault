@@ -25,3 +25,10 @@ footer {
     padding:3em;
     text-align: center;
 }
+
+.logout {
+    position: absolute;
+    right:1em;
+    top:1em;
+    font-size: 3em;
+}

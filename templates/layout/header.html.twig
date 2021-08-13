@@ -1,3 +1,8 @@
 <h1>Coffre-fort numérique </h1> 
 <h6>Version 1.0</h6>
 <h6>Laetitia Deschamps</h6>
+
+{% if app.user %}
+<a href="{{path('app_logout')}}" class="logout"><i class="fas fa-sign-out-alt"></i></a>
+
+{% endif %}
