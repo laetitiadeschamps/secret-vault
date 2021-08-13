@@ -17,7 +17,10 @@
         <header class="main-header">
             {% include "layout/header.html.twig" %}
         </header>
-        {% block body %}{% endblock %}
+        <main>
+             {% include "partials/_flash.html.twig" %}
+             {% block body %}{% endblock %}
+        </main>    
         <footer>
             {% include "layout/footer.html.twig" %}
         </footer>

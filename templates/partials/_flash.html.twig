@@ -1,0 +1,9 @@
+<div class="flash-container">
+{% for label, messages in app.flashes %}
+	{% for message in messages %}
+		<div class="flash alert alert-{{ label }} text-center">
+			{{ message }}
+		</div>
+	{% endfor %}
+{% endfor %}
+</div>
