@@ -41,7 +41,7 @@ class FileController extends AbstractController
             $file->setPath($fileName);
             $file->setAuthor($user);
             
-    
+            $em->persist($file);
             $em->flush();
             $this->addFlash(
                  'info',
