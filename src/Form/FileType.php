@@ -13,10 +13,8 @@ class FileType extends AbstractType
     {
         $builder
             ->add('path')
-            ->add('updated_at')
-            ->add('created_at')
             ->add('name')
-            ->add('author')
+           
         ;
     }
 

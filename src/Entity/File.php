@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FileRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class File
 {
+    public function __construct()
+    {
+        $this->updated_at = new DateTime();
+        $this->created_at = new DateTime();
+    }
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
