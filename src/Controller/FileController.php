@@ -7,7 +7,7 @@ use App\Form\FileType;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,7 +17,7 @@ class FileController extends AbstractController
      * Route allowing to upload a file through a form and processing it
      * @Route("/file", name="file-upload", methods={"GET", "POST"})
      */
-    public function upload(Request $request, EntityManagerInterface $em): Response
+    public function upload(HttpFoundationRequest $request, EntityManagerInterface $em): Response
     {
         $file = new File();
         $form = $this->createForm(FileType::class, $file);
