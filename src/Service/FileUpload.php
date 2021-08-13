@@ -29,6 +29,7 @@ class FileUpload
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+        //TODO encrypt file
         try {
             $file->move($this->getTargetDirectory(), $fileName);
             return $fileName;
