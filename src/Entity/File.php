@@ -46,7 +46,9 @@ class File
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $alias;
+
+   
 
     public function getId(): ?int
     {
@@ -101,15 +103,17 @@ class File
         return $this;
     }
 
-    public function getName(): ?string
+    public function getAlias(): ?string
     {
-        return $this->name;
+        return $this->alias;
     }
 
-    public function setName(string $name): self
+    public function setAlias(string $alias): self
     {
-        $this->name = $name;
+        $this->alias = $alias;
 
         return $this;
     }
+
+    
 }

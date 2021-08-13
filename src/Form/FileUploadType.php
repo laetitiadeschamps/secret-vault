@@ -8,13 +8,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Constraints\File as ConstraintsFile;
 
 class FileUploadType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file',FileType::class, [
+            ->add('path',FileType::class, [
                 'label' => false,
                 'mapped' => false,
 
@@ -22,7 +23,7 @@ class FileUploadType extends AbstractType
                 'required' => false,
                 // unmapped fields can't define their validation using annotations
                 'constraints' => [
-                    new File([
+                    new ConstraintsFile([
                         'maxSize' => '3000k',
                         'mimeTypes' => [
                             'text/plain',
@@ -32,7 +33,7 @@ class FileUploadType extends AbstractType
                     ])
                 ],
             ])
-            ->add('name', null, [
+            ->add('alias', null, [
                 'label'=>false,
                 'attr'=> [
                     'placeholder'=>'Donnez un nom à votre fichier'

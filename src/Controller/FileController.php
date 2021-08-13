@@ -10,6 +10,7 @@ use App\Service\FileUpload;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,22 +24,23 @@ class FileController extends AbstractController
      */
     public function upload(HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Security $security): Response
     {
+        
         /** @var User $user */
         $user = $security->getUser();
         $file = new File();
         $form = $this->createForm(FileUploadType::class, $file);
 
         $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
-         
-            /** @var UploadedFile $pictureFile */
-             $file = $form->get('file')->getData();
+        
+           
+            $file = $form->get('path')->getData();
+            $fileName = $fileUpload->upload($file, $this->getParameter('files_directory'));  
+            /** @var File $file */
+            $file->setPath($fileName);
+            $file->setAuthor($user);
             
-            if ($file) {         
-                $fileName = $fileUpload->upload($file, $this->getParameter('files_directory'));  
-                $file->setPath($fileName);
-                $file->setAuthor($user);
-            }
     
             $em->flush();
             $this->addFlash(
