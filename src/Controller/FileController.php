@@ -60,17 +60,18 @@ class FileController extends AbstractController
      * Route allowing to decrypt and download a file
      * @Route("/{id}", name="download", methods={"GET", "POST"})
      */
-    public function download(HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Security $security): Response
+    public function download(File $file, HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Security $security): Response
     {
         
         /** @var User $user */
         $user = $security->getUser();
-       // deny access unlesss granted 
+
+        $this->denyAccessUnlessGranted('download', $file);
 
        // TODO decrypt file
 
        // TODO download
-       
+
         return $this->redirectToRoute('main');
         
        
