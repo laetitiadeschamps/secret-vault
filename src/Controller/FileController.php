@@ -27,10 +27,14 @@ class FileController extends AbstractController
     /**
      * Route allowing to upload a file through a form and processing it
      * @Route("/", name="upload", methods={"GET", "POST"})
+     * @param HttpFoundationRequest $request
+     * @param EntityManagerInterface $em
+     * @param FileUpload $fileUpload
+     * @param Security $security
+     * @return Response
      */
     public function upload(HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Security $security): Response
-    {
-        
+    { 
         /** @var User $user */
         $user = $security->getUser();
         $file = new File();
@@ -39,7 +43,7 @@ class FileController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-        
+        // When the form is valid and submitted, we process the file : we upload it through the service, that also encrypts it, and we update our database
            /** @var UploadedFile $uploadedFile */
             $uploadedFile = $form->get('path')->getData();
             $fileName = $fileUpload->upload($uploadedFile, $this->getParameter('files_directory'));  
@@ -49,6 +53,7 @@ class FileController extends AbstractController
             
             $em->persist($file);
             $em->flush();
+            //adding a flash message for UX
             $this->addFlash(
                  'info',
                  'Le fichier a bien été chargé'
@@ -59,21 +64,24 @@ class FileController extends AbstractController
             'form'=> $form->createView()
         ]);
     }
-    /**
-     * Route allowing to decrypt and download a file
-     * @Route("/{id}", name="download", methods={"GET", "POST"})
-     */
-    public function download(File $file, HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Encryption $encryption): Response
+   
+
+     /** 
+      * Route allowing to decrypt and download a file
+      * @Route("/{id}", name="download", methods={"GET", "POST"})
+      * @param File $file
+      * @param Encryption $encryption
+      * @return Response
+      */
+    public function download(File $file, Encryption $encryption): Response
     {
-
+        //Allowing access only if we are the one who uploaded the file
         $this->denyAccessUnlessGranted('download', $file);
-
+        // From file path, we retrieve the proper encrypted file, and use the appropriate service to decrypt it
         $filePath =  $this->getParameter('files_directory') . '/' . $file->getPath();
-        
         $ext = pathinfo($filePath)['extension'];
-
         $temp = $encryption->decrypt($filePath);
-        
+        // We launch the file's download, using the name given by the user upon uploading and the proper extension
         return $this->file($temp, $file->getAlias(). '.' . $ext);
         
        

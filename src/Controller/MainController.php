@@ -10,7 +10,10 @@ use Symfony\Component\Security\Core\Security;
 class MainController extends AbstractController
 {
     /**
+     * Route used to access a user's homepage and the list of files uploaded
      * @Route("/", name="main")
+     * @param Security $security
+     * @return Response
      */
     public function index(Security $security): Response
     {
