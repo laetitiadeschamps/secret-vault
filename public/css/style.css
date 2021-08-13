@@ -9,3 +9,13 @@ a {
     color:inherit;
     text-decoration: none;
 }
+
+footer {
+    position: absolute;
+    background-color: khaki;
+    padding:3em;
+    bottom:0;
+    left:0;
+    right:0;
+    text-align: center;
+}
