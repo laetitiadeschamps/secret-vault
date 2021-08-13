@@ -75,7 +75,7 @@ class FileController extends AbstractController
       */
     public function download(File $file, Encryption $encryption): Response
     {
-        //Allowing access only if we are the one who uploaded the file
+        //Allowing access only if we are the one who uploaded the file or an admin (not implemented yet)
         $this->denyAccessUnlessGranted('download', $file);
         // From file path, we retrieve the proper encrypted file, and use the appropriate service to decrypt it
         $filePath =  $this->getParameter('files_directory') . '/' . $file->getPath();
@@ -86,5 +86,31 @@ class FileController extends AbstractController
         
        
     }
+    /** 
+      * Route allowing to delete a file
+      * @Route("/{id}/delete", name="delete")
+      * @param File $file
+      * @return Response
+      */
+      public function delete(File $file, EntityManagerInterface $em, Filesystem $filesystem): Response
+      {
+        //Allowing access only if we are the one who uploaded the file or an admin (not implememnted yet)
+        $this->denyAccessUnlessGranted('delete', $file);
+        // We get the file path and remove it from the server
+        $filePath =  $this->getParameter('files_directory') . '/' . $file->getPath();
+        $filesystem->remove($filePath);
+        // We remove the file entry on the database
+        $em->remove($file);
+        $em->flush();
+         //adding a flash message for UX
+         $this->addFlash(
+            'info',
+            'Le fichier a bien été supprimé'
+       );
+
+        return $this->redirectToRoute('main');
+          
+         
+      }
         
 }

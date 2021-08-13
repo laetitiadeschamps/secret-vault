@@ -9,12 +9,15 @@
     </header>
     <ul class="my-4 list-group list-group-flush w-50 mx-auto">
         {% for file in files %}
-            <a class="list-group-item" href="{{path('file-download', {id: file.id})}}">{{ file.alias }}
+        <li class="list-group-item">
+            <a href="{{path('file-download', {id: file.id})}}">{{ file.alias }}
                 <span><i class="fas fa-download px-2"></i></span>
+            </a>
+            <a href="{{path('file-delete', {id: file.id})}}"><i class="fas fa-trash px-2"></i></a>
                 <span class="badge bg-secondary text-wrap">
                     {{ file.createdAt | date("d-m-y")}}
                 </span>
-            </a>
+        </li>   
         {% else %} 
             <p>Vous n'avez pas encore de fichier, cliquez sur "Charger un fichier" pour charger votre premier fichier !</p>
         {% endfor %}

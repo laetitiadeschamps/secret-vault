@@ -14,6 +14,7 @@ class FileVoter extends Voter
     // these strings are just invented: you can use anything
     const UPLOAD = 'upload';
     const DOWNLOAD = 'download';
+    const DELETE = 'delete';
     private $security;
  
     public function __construct(Security $security)
@@ -22,7 +23,7 @@ class FileVoter extends Voter
     }
     protected function supports(string $attribute, $subject): bool
     {
-         return in_array($attribute, [self::UPLOAD, self::DOWNLOAD])
+         return in_array($attribute, [self::UPLOAD, self::DOWNLOAD, self::DELETE])
              && $subject instanceof \App\Entity\File;
     }
  
@@ -43,11 +44,21 @@ class FileVoter extends Voter
                  return $this->canUpload($file, $user);
              case self::DOWNLOAD:
                  return $this->canDownload($file, $user);
+             case self::DELETE:
+                 return $this->canDelete($file, $user);
          }
  
          throw new \LogicException('l\'action n\'est pas autorisée!');
      }
     private function canUpload(File $file, User $user): bool
+    {
+        // if they can download, they can upload
+        if ($this->canDownload($file, $user)) {
+            return true;
+        }
+        return false;
+    }
+    private function canDelete(File $file, User $user): bool
     {
         // if they can download, they can upload
         if ($this->canDownload($file, $user)) {
