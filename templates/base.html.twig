@@ -12,14 +12,15 @@
         {% endblock %}
 
     </head>
-    <header class="main-header">
-        {% include "layout/header.html.twig" %}
-    </header>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-    <footer>
-        {% include "layout/footer.html.twig" %}
-    </footer>
     
+    <body>
+        <header class="main-header">
+            {% include "layout/header.html.twig" %}
+        </header>
+        {% block body %}{% endblock %}
+        <footer>
+            {% include "layout/footer.html.twig" %}
+        </footer>
+    </body>
+     
 </html>

@@ -3,24 +3,26 @@
 {% block title %}Accueil! | {{parent() }} {% endblock %}
 
 {% block body %}
-<div class="w-50 mx-auto my-auto content-container text-center">
+<section class="w-50 mx-auto my-auto content-container text-center">
     <header>
-    <h1>Mes fichiers</h1>
+        <h1>Mes fichiers</h1>
     </header>
     <ul class="my-4 list-group list-group-flush w-50 mx-auto">
         {% for file in files %}
             <a class="list-group-item" href="{{path('file-download', {id: file.id})}}">{{ file.alias }}
                 <span><i class="fas fa-download px-2"></i></span>
-                <div class="badge bg-secondary text-wrap">
+                <span class="badge bg-secondary text-wrap">
                     {{ file.createdAt | date("d-m-y")}}
-                </div>
+                </span>
             </a>
-
         {% else %} 
-        
+            <p>Vous n'avez pas encore de fichier, cliquez sur "Charger un fichier" pour charger votre premier fichier !</p>
         {% endfor %}
     </ul>
-    <a href="{{path('file-upload')}}" class="btn btn-outline-success ml-4">Charger un fichier</a>
-</div>
+    <div class="new-upload">
+        <a href="{{path('file-upload')}}" class="btn btn-outline-success ml-4">Charger un fichier</a>
+    </div>
+    
+</section>
 
 {% endblock %}

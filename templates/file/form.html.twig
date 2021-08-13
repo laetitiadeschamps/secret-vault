@@ -4,14 +4,14 @@
 
 {% block body %}
 
- <section class="d-flex w-50 mx-auto my-auto content-container">
+    <section class="d-flex w-50 mx-auto my-auto content-container">
         <figure class="w-50">
             <img src="{{asset('images/vault.jpg')}}" class="w-100" alt="">
         </figure>
-        <div class="d-flex flex-column justify-content-center w-50">
+        <article class="d-flex flex-column justify-content-center w-50">
              <h1 class="text-center">Charger un fichier </h1>
               {{ form(form, {'attr':{'novalidate':'novalidate', 'class':'mx-auto text-center'}} ) }}
-        </div>
+        </article>
        
     </section>
 
