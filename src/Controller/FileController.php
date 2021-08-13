@@ -10,7 +10,9 @@ use App\Service\FileUpload;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -60,7 +62,7 @@ class FileController extends AbstractController
      * Route allowing to decrypt and download a file
      * @Route("/{id}", name="download", methods={"GET", "POST"})
      */
-    public function download(File $file, HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Security $security): Response
+    public function download(File $file, HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Security $security, Filesystem $filesystem): Response
     {
         
         /** @var User $user */
@@ -68,7 +70,23 @@ class FileController extends AbstractController
 
         $this->denyAccessUnlessGranted('download', $file);
 
-       // TODO decrypt file
+        $filePath =  $this->getParameter('files_directory') . '/' . $file->getPath();
+        $encrytedText = file_get_contents($filePath); 
+       $encrytedText = base64_decode($encrytedText);
+        $cipher="AES-128-CBC";
+        $ivlen = openssl_cipher_iv_length($cipher);
+        
+        $iv = substr($encrytedText,0,$ivlen);
+        $decryptedText = openssl_decrypt(substr($encrytedText, $ivlen), $cipher, $user->getPassword(), 0, $iv);
+    
+        $temp = tempnam(sys_get_temp_dir(), 'myAppNamespace');
+      
+        file_put_contents($temp, $decryptedText);
+        $ext = pathinfo($filePath)['extension'];
+        
+        return $this->file($temp, $file->getAlias(). '.' . $ext);
+      
+
 
        // TODO download
 

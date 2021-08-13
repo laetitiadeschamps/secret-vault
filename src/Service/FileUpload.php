@@ -41,7 +41,10 @@ class FileUpload
         $cipher = "AES-128-CBC";
         $ivlen = openssl_cipher_iv_length($cipher);
         $iv = openssl_random_pseudo_bytes($ivlen);
+        dump($iv);
         $encryptedText = openssl_encrypt($text, $cipher, $user->getPassword(), 0, $iv);
+        $encryptedText = base64_encode($iv.$encryptedText);
+      
         file_put_contents($file, $encryptedText);
         try {
             $file->move($this->getTargetDirectory(), $fileName);
