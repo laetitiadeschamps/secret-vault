@@ -6,14 +6,14 @@
 
 ### Projet
 
-Ce projet est un coffre-fort numérique, il permet don de : 
+Ce projet est un coffre-fort numérique, il permet donc de : 
 - Se créer un compte et se connecter / déconnecter
 - Charger des fichiers qui seront ensuite cryptés et déposés sur le serveur, leur donner un nom
 - Visualiser la liste des fichiers que nous avons chargés, ainsi que la date du chargement
 - Télécharger les fichiers chargés, ils seront alors décryptés et mis dans un dossier temporaires pour pouvoir être téléchargés en clair
 - Supprimer des fichiers chargés
-Le projet ne gère pour le moment que les fichiers .txt et .pdf, ce sera amélioré dans une V2. 
-Les images utilisées sont libres de droit. 
+**Le projet ne gère pour le moment que les fichiers .txt et .pdf, ce sera amélioré dans une V2.** 
+*Les images utilisées sont libres de droit.*
 
 ## Stack
 
