@@ -6,6 +6,7 @@ use App\Entity\File;
 use App\Entity\User;
 use App\Form\FileType;
 use App\Form\FileUploadType;
+use App\Service\Encryption;
 use App\Service\FileUpload;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -62,35 +63,18 @@ class FileController extends AbstractController
      * Route allowing to decrypt and download a file
      * @Route("/{id}", name="download", methods={"GET", "POST"})
      */
-    public function download(File $file, HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Security $security, Filesystem $filesystem): Response
+    public function download(File $file, HttpFoundationRequest $request, EntityManagerInterface $em, FileUpload $fileUpload, Encryption $encryption): Response
     {
-        
-        /** @var User $user */
-        $user = $security->getUser();
 
         $this->denyAccessUnlessGranted('download', $file);
 
         $filePath =  $this->getParameter('files_directory') . '/' . $file->getPath();
-        $encrytedText = file_get_contents($filePath); 
-       $encrytedText = base64_decode($encrytedText);
-        $cipher="AES-128-CBC";
-        $ivlen = openssl_cipher_iv_length($cipher);
         
-        $iv = substr($encrytedText,0,$ivlen);
-        $decryptedText = openssl_decrypt(substr($encrytedText, $ivlen), $cipher, $user->getPassword(), 0, $iv);
-    
-        $temp = tempnam(sys_get_temp_dir(), 'myAppNamespace');
-      
-        file_put_contents($temp, $decryptedText);
         $ext = pathinfo($filePath)['extension'];
+
+        $temp = $encryption->decrypt($filePath);
         
         return $this->file($temp, $file->getAlias(). '.' . $ext);
-      
-
-
-       // TODO download
-
-        return $this->redirectToRoute('main');
         
        
     }

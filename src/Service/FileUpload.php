@@ -30,8 +30,6 @@ class FileUpload
     */
     public function upload(UploadedFile $file, string $targetDirectory =null) : ?string 
     {
-        /** @var User $user */
-        $user = $this->security->getUser();
         //If a target directory is given, we move the file there, else, we use a default directory specified in .env file
         $this->targetDirectory=$targetDirectory ?? $_ENV['UPLOAD_FOLDER'];
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);

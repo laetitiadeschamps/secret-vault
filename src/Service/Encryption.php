@@ -35,6 +35,24 @@ class Encryption
         file_put_contents($file, $encryptedText);
     }
 
+    public function decrypt(string $filePath) {
+        /** @var User $user */
+        $user = $this->security->getUser();
+
+        $encrytedText = file_get_contents($filePath); 
+        $encrytedText = base64_decode($encrytedText);
+        $cipher="AES-128-CBC";
+        $ivlen = openssl_cipher_iv_length($cipher);
+        
+        $iv = substr($encrytedText,0,$ivlen);
+        $decryptedText = openssl_decrypt(substr($encrytedText, $ivlen), $cipher, $user->getPassword(), 0, $iv);
+    
+        $temp = tempnam(sys_get_temp_dir(), 'myAppNamespace');
+      
+        file_put_contents($temp, $decryptedText);
+        return $temp;
+    }
+
 
 
 }
