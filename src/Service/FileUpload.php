@@ -14,11 +14,13 @@ class FileUpload
     private $targetDirectory;
     private $slugger;
     private $security;
+    private $encryption;
 
-    public function __construct(SluggerInterface $slugger, Security $security)
+    public function __construct(SluggerInterface $slugger, Security $security, Encryption $encryption)
     {
         $this->slugger = $slugger;
         $this->security = $security;
+        $this->encryption = $encryption;
     }
 
     /** Method to upload a file
@@ -35,17 +37,8 @@ class FileUpload
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
         $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
-        //TODO encrypt file
-        $text = file_get_contents($file);
-
-        $cipher = "AES-128-CBC";
-        $ivlen = openssl_cipher_iv_length($cipher);
-        $iv = openssl_random_pseudo_bytes($ivlen);
-        dump($iv);
-        $encryptedText = openssl_encrypt($text, $cipher, $user->getPassword(), 0, $iv);
-        $encryptedText = base64_encode($iv.$encryptedText);
-      
-        file_put_contents($file, $encryptedText);
+        $this->encryption->encrypt($file);
+        
         try {
             $file->move($this->getTargetDirectory(), $fileName);
             return $fileName;
