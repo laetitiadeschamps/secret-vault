@@ -3,29 +3,34 @@
 {% block title %}Connexion | {{parent()}} {% endblock %}
 
 {% block body %}
-<form method="post" novalidate class="w-25 mx-auto m-4">
-    {% if error %}
-        <div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+<section class="d-flex w-50 mx-auto my-auto account-container">
+    <figure class="w-50">
+        <img src="{{asset('images/vault.jpg')}}" alt="" class="w-100">
+    </figure>
+    <form method="post" novalidate class="w-50 mx-auto m-4 d-flex flex-column justify-content-center">
+        {% if error %}
+            <div class="alert alert-danger text-center">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-           Vous êtes connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
-        </div>
-    {% endif %}
-    <section class="text-center">
-        <h1 class="h3 mb-3 font-weight-normal text-center">Se connecter</h1>
-        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control my-4" placeholder="Nom d'utilisateur" autocomplete="username" required autofocus>
+        {% if app.user %}
+            <div class="mb-3">
+            Vous êtes connecté en tant que {{ app.user.username }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+            </div>
+        {% endif %}
+        <section class="text-center w-50 mx-auto">
+            <h1 class="h3 mb-3 font-weight-normal text-center">Se connecter</h1>
+            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control my-4" placeholder="Nom d'utilisateur" autocomplete="username" required autofocus>
+            
+            <input type="password" name="password" id="inputPassword" placeholder="Mot de passe" class="form-control my-4" autocomplete="current-password" required>
+
+            <input type="hidden" name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}"
+            >
+            <button class="btn btn-lg btn-success" type="submit">
+                Se connecter
+            </button>
+        </section>
         
-        <input type="password" name="password" id="inputPassword" placeholder="Mot de passe" class="form-control my-4" autocomplete="current-password" required>
-
-        <input type="hidden" name="_csrf_token"
-            value="{{ csrf_token('authenticate') }}"
-        >
-        <button class="btn btn-lg btn-primary" type="submit">
-            Se connecter
-        </button>
-    </section>
-    
-</form>
+    </form>
+</section>
 {% endblock %}
