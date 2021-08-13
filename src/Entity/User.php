@@ -9,10 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity("username", message="Ce nom d'utilisateur existe déjà")
+ * @UniqueEntity("email", message="Ce mail existe déjà")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -25,6 +27,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     *  @Assert\NotBlank(message="Le nom d'utilisateur doit être renseigné.", groups={"add", "update"})
+     *  @Assert\Length(
+     *      min = 4,
+     *      max = 30,
+     *      minMessage = "Votre nom d'utilisateur doit faire au moins {{ limit }} caractères.",
+     *      maxMessage = "Votre nom d'utilisateur doit ne doit pas faire plus de {{ limit }} caractères."
+     * , groups={"add", "update"})
      */
     private $username;
 
@@ -36,6 +45,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Le mot de passe ne peut pas être vide.")
+     * @Assert\Regex(
+     *      pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$%_*|=&-])[A-Za-z\d@$%_*|=&-]{6,}$/",
+     *      message="Le mot de passe doit faire au moins 6 caractères, comporter une majuscule, une minuscule, un chiffre et un caractère spécial parmi les suivants : @$%_*|=-"
+     *  )
      */
     private $password;
 
@@ -43,6 +57,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=File::class, mappedBy="author")
      */
     private $files;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Email(message = "'{{ value }}' n'est pas un email valide.")
+     * @Assert\NotBlank(message="L'email ne peut pas être vide.")
+     */
+    private $email;
 
     public function __construct()
     {
@@ -159,6 +180,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $file->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }
