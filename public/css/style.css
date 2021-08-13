@@ -1,4 +1,4 @@
-.account-container {
+.content-container {
     position: absolute;
     top:50%;
     left:50%;
@@ -17,5 +17,11 @@ footer {
     bottom:0;
     left:0;
     right:0;
+    text-align: center;
+}
+
+.main-header {
+    background-color: khaki;
+    padding:3em;
     text-align: center;
 }

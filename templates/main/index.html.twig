@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Accueil! | {{parent() }} {% endblock %}
 
 {% block body %}
-<div>
-    <h1>Mes fichiers</h1>
+<div class="w-50 mx-auto my-auto content-container">
+    <header>
+    <h1>Mes fichiers</h1><a href="{{path('file-upload')}}" class="btn btn-outline-success">Charger un fichier</a>
+    </header>
     <ul>
         {% for file in files %}
             <a href="{{path('file-download', {id: file.id})}}">{{ file.alias }}
@@ -15,8 +17,7 @@
         
         {% endfor %}
     </ul>
+    
 </div>
-<div class="example-wrapper">
-    <a href="{{path('file-upload')}}">Charger un fichier</a>
-</div>
+
 {% endblock %}

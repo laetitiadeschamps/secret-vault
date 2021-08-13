@@ -15,6 +15,9 @@
             {#{{ encore_entry_script_tags('app') }}#}
         {% endblock %}
     </head>
+    <header class="main-header">
+        {% include "layout/header.html.twig" %}
+    </header>
     <body>
         {% block body %}{% endblock %}
     </body>
