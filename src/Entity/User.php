@@ -27,13 +27,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     *  @Assert\NotBlank(message="Le nom d'utilisateur doit être renseigné.", groups={"add", "update"})
-     *  @Assert\Length(
+     * @Assert\NotBlank(message="Le nom d'utilisateur doit être renseigné.")
+     * @Assert\Length(
      *      min = 4,
      *      max = 30,
      *      minMessage = "Votre nom d'utilisateur doit faire au moins {{ limit }} caractères.",
      *      maxMessage = "Votre nom d'utilisateur doit ne doit pas faire plus de {{ limit }} caractères."
-     * , groups={"add", "update"})
+     * )
      */
     private $username;
 
@@ -43,13 +43,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var string The hashed password, constraints in form
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Le mot de passe ne peut pas être vide.")
-     * @Assert\Regex(
-     *      pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$%_*|=&-])[A-Za-z\d@$%_*|=&-]{6,}$/",
-     *      message="Le mot de passe doit faire au moins 6 caractères, comporter une majuscule, une minuscule, un chiffre et un caractère spécial parmi les suivants : @$%_*|=-"
-     *  )
      */
     private $password;
 
