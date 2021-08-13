@@ -3,7 +3,16 @@
 {% block title %}Hello MainController!{% endblock %}
 
 {% block body %}
-
+<div>
+    <h1>Mes fichiers</h1>
+    <ul>
+        {% for file in files %}
+            {{ file.alias }}
+        {% else %} 
+        
+        {% endfor %}
+    </ul>
+</div>
 <div class="example-wrapper">
     <a href="{{path('file-upload')}}">Charger un fichier</a>
 </div>
