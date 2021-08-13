@@ -34,10 +34,10 @@ class FileController extends AbstractController
         
         if ($form->isSubmitted() && $form->isValid()) {
         
+           /** @var UploadedFile $uploadedFile */
+            $uploadedFile = $form->get('path')->getData();
+            $fileName = $fileUpload->upload($uploadedFile, $this->getParameter('files_directory'));  
            
-            $file = $form->get('path')->getData();
-            $fileName = $fileUpload->upload($file, $this->getParameter('files_directory'));  
-            /** @var File $file */
             $file->setPath($fileName);
             $file->setAuthor($user);
             
